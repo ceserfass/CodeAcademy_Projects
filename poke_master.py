@@ -215,6 +215,7 @@ class Trainer():
         pass
 
     def switch_pokemon(self, new_pokemon):
+        #this is going to work for both yourself and the opposing trainer
         pass
 
     def catch_pokemone(self, ):
