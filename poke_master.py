@@ -107,6 +107,8 @@ class Pokemon:
         if self.disadvantage[self.element] == enemy.element:
             print(f"{self.name} is at a disadvantage against {enemy.name}!")
             return 0.5
+        if self.advantage[self.element] != enemy.element and self.disadvantage[self.element] != enemy.element:
+            return 1
 
 
 #FIRST FAILED ATTEMPT AT THE ADVANTAGE CHECK, DO NOT USE THIS ONE
@@ -179,7 +181,7 @@ class Pokemon:
 
 #listing active Pokemon as 1-6 as per the list
 class Trainer:
-    def __init__(self, name, Pokemon_list, potions_list, active_pokemon=0):
+    def __init__(self, name, Pokemon_list = [], potions_list = [], active_pokemon=0):
         self.name = name
         self.Pokemon_list = Pokemon_list
         self.potions_list = potions_list
@@ -197,7 +199,6 @@ class Trainer:
         Active Pokemon: {self.Pokemon_list[self.active_pokemon]}
         """
 
-    def 
 
 
 
@@ -207,7 +208,7 @@ class Trainer:
 #test class instantiation
 Cyndaquil = Pokemon("Cyndaquil", 40, "Fire", 100)
 Totodile = Pokemon("Totodile", 50, "Water", 100)
-# Pikachu = Pokemon("Pikachu", 60, "Electric")
+Charmander = Pokemon("Charmander", 60, "Fire")
 # print(Cyndaquil)
     # this test worked and I got the __repr__ method to work with strings
 # print(Cyndaquil.name)
@@ -217,12 +218,13 @@ Totodile = Pokemon("Totodile", 50, "Water", 100)
 # print(Cyndaquil.max_health)
 
 #test Trainer instantiation
-Ash = Trainer("Ash", [Cyndaquil, Totodile], ["heal", "revive", "antidote", "burn salve"])
+Ash = Trainer("Ash", [Cyndaquil, Totodile, Charmander], ["heal", "revive", "antidote", "burn salve"])
 #print(Ash)
 
 #fix the problem with the advantage/disadvantage chart if the pokemon's element
 #doesn't appear within the chart
 # ie for Pikachu
+# I think i fixed this 6.26.20
 
 
 #TESTING THE ATTACK FUNCTION WITH ALL FUNCTIONALITY
@@ -238,7 +240,8 @@ Ash = Trainer("Ash", [Cyndaquil, Totodile], ["heal", "revive", "antidote", "burn
 # Cyndaquil.knock_out()
 # Cyndaquil.revive()
 # Cyndaquil.heal()
-
+Charmander.attacks(Cyndaquil)
+Cyndaquil.attacks(Charmander)
 
 
 
@@ -263,7 +266,7 @@ Ash = Trainer("Ash", [Cyndaquil, Totodile], ["heal", "revive", "antidote", "burn
 
 # obj1 = A(5)
 # obj2 = A(10)
-# print(obj1 + obj2)  # 15 
+# print(obj1 + obj2)  # 15
 # #print(obj1 - obj2)
 
 # print(obj1.the_third())
