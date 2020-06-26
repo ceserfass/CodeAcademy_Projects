@@ -287,3 +287,10 @@ Cyndaquil.attacks(Charmander)
 
 # obj3 = A(20)
 # print(obj3.a, obj3.b)
+
+#HOW TO WORK COLLABORATIVELY IN GIT / GITHUB
+# Fetch and merge changes from the remote
+#     Create a branch to work on a new project feature
+#     Develop the feature on your branch and commit your work
+#     Fetch and merge from the remote again (in case new commits were made while you were working)
+#     Push your branch up to the remote for review
