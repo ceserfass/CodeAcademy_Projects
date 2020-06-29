@@ -144,7 +144,22 @@ class Trainer():
                 target_pokemon.heal(100)
                 print(f'Used {self.potions[0]}.')
                 self.potions.pop(0)
-                return 
+                
+        else:
+            index_count = 0
+            for i in self.potions:
+                if i == potion:
+                    target_pokemon.heal(100)
+                    print(f'Used {potion}.')
+                    self.potions.pop(index_count)
+                    return
+                index_count += 1
+            return print(f"{potion} is not in your inventory.")   
+
+
+            # chceck if potion is in the potion list
+            #error handling
+            # if it is, use it
 
     def switch_pokemon(self, new_pokemon):
         # this is going to work for both yourself and the opposing trainer
@@ -193,13 +208,10 @@ Charmander = Pokemon("Charmander", 60, "Fire", awake_asleep=False)
 # test Trainer instantiation
 Ash = Trainer("Ash", pokemon=[Cyndaquil, Totodile, Charmander], potions=[
               "heal", "revive", "antidote", "burn salve"])
-print(Ash)
-Ash.use_potion(Charmander)
-print(Ash)
-# fix the problem with the advantage/disadvantage chart if the pokemon's element
-# doesn't appear within the chart
-# ie for Pikachu
-# I think i fixed this 6.26.20
+# print(Ash)
+# Ash.use_potion(Charmander, "antidote")
+# print(Ash)
+
 
 
 # TESTING THE ATTACK FUNCTION WITH ALL FUNCTIONALITY
