@@ -47,37 +47,12 @@ class Pokemon:
         {self.name} is awake? {self.awake}
         """
 
-# add a __repr__ method that prints the stats of the Pokemon currently
-# COMPLETE
-
-# !!! change awake_asleep to True/False so you can check KO
-# COMPLETE
-
-# now we are basically writing a fancy text based roleplay to fight pokemon
-# this means we need to hurt, heal, KO, and revive
-
-# how do I make a running mutable value for health that the following method can change?
-# jeff doesn't think I need to so I'll try it without
-# that totally worked
-
-# now, how do I get it so current health has a min of 0 and max of 100?
-# !!! fix this -- write a new method that does this functionality
-# !!! then call that method inside other methods
-# COMPLETE
-
     def health_check(self):
         if self.current_health < 0:
             self.current_health = 0
         if self.current_health > 100:
             self.current_health = 100
         return self.current_health
-
-
-# I also need to write in functionality so that two pokemon can attack each other
-# such as instantiating two different pokemon and having them attack each other
-# okay that's working other than printing the __repr__ at the instance of self.name??
-# totally got that working by using the .name for the enemy as well
-
 
     def knock_out(self):
         self.health_check()
@@ -93,28 +68,6 @@ class Pokemon:
         self.health_check()
         print(f'{self.name} has been revived to {self.current_health} HP!')
 
-# okay my problem here is I wrote the following as the self being acted UPON
-# they're asking for the self to do the acting
-# so I need to rewrite this
-    # def attacked_by(self, enemy_name, attack_value=None):
-    #     if attack_value == None:
-    #         attack = random.randint(0,100)
-    #     else:
-    #         attack = attack_value
-
-    #     self.current_health -= attack
-    #     self.health_check()
-    #     if self.current_health <= 0:
-    #         self.knock_out()
-
-    #     print(f"{enemy_name.name} has attacked {self.name}! {self.name}'s health is reduced to {self.current_health}!")
-
-    # THIS WASN'T A GOOD STRUCTURE SO I REMADE IT ENTIRELY AS BELOW
-    # Fire = {"advantage": "Grass", "disadvantage": "Water"}
-    # Water = {"advantage": "Fire", "disadvantage": "Grass"}
-    # Grass = {"advantage": "Water", "disadvantage": "Fire"}
-    # If we ever want to add more types where the advantages stack, make the value a list???
-
     advantage = {"Fire": "Grass", "Water": "Fire", "Grass": "Water"}
     disadvantage = {"Fire": "Water", "Water": "Grass", "Grass": "Fire"}
 
@@ -128,33 +81,6 @@ class Pokemon:
             return 0.5
         if self.advantage[self.element] != enemy.element and self.disadvantage[self.element] != enemy.element:
             return 1
-
-
-# FIRST FAILED ATTEMPT AT THE ADVANTAGE CHECK, DO NOT USE THIS ONE
-    # advantage_dict = [Fire, Water, Grass]
-
-    # def advantage_check(self, enemy):
-
-    #     if self.element == "Fire":
-    #         if self.Fire["advantage"] == enemy.element():
-    #             return 2
-    #         elif self.Fire["disadvantage"] == enemy.element():
-    #             return 0.5
-
-    #     elif self.element == "Water":
-
-    #         if self.Water["advantage"] == enemy.element():
-    #             return 2
-    #         elif self.Water["disadvantage"] == enemy.element():
-    #             return 0.5
-
-    #     elif self.element == "Grass":
-
-    #         if self.Grass["advantage"] == enemy.element():
-    #             return 2
-    #         elif self.Grass["disadvantage"] == enemy.element():
-    #             return 0.5
-
 
     def attacks(self, enemy, attack_value=None):
         if attack_value == None:
@@ -211,17 +137,33 @@ class Trainer():
     def attack(self, trainer):
         pass
 
-    def use_potion(self, pokemon):
-        pass
+    def use_potion(self, target_pokemon, potion=None):
+
+        if potion == None:
+            if self.potions[0] != None:
+                target_pokemon.heal(100)
+                print(f'Used {self.potions[0]}.')
+                self.potions.pop(0)
+                return 
 
     def switch_pokemon(self, new_pokemon):
-        #this is going to work for both yourself and the opposing trainer
-        pass
+        # this is going to work for both yourself and the opposing trainer
 
-    def catch_pokemone(self, ):
-        #         if self.pokemon != []:
-        # self.current_pokemon = self.pokemon[0]
-        pass
+        if self.current_pokemon == new_pokemon:
+            return print('Already current!')
+
+        for i in self.pokemon:
+
+            if new_pokemon.name == i.name:
+                if i.awake == True:
+                    self.current_pokemon = i
+                    return print(f"Switched current pokemon to {i.name}")
+
+                return print(f"{i.name} is Unconcious. Choose another!")
+
+
+        return print("Pokemon not owned! Better catch 'em all!")
+
 
     def __repr__(self):
         list_pokemon_names = ""
@@ -239,7 +181,7 @@ class Trainer():
 # test class instantiation
 Cyndaquil = Pokemon("Cyndaquil", 40, "Fire", 100)
 Totodile = Pokemon("Totodile", 50, "Water", 100)
-Charmander = Pokemon("Charmander", 60, "Fire")
+Charmander = Pokemon("Charmander", 60, "Fire", awake_asleep=False)
 # print(Cyndaquil)
 # this test worked and I got the __repr__ method to work with strings
 # print(Cyndaquil.name)
@@ -252,7 +194,8 @@ Charmander = Pokemon("Charmander", 60, "Fire")
 Ash = Trainer("Ash", pokemon=[Cyndaquil, Totodile, Charmander], potions=[
               "heal", "revive", "antidote", "burn salve"])
 print(Ash)
-
+Ash.use_potion(Charmander)
+print(Ash)
 # fix the problem with the advantage/disadvantage chart if the pokemon's element
 # doesn't appear within the chart
 # ie for Pikachu
@@ -299,10 +242,9 @@ print(Ash)
 # obj3 = A(20)
 # print(obj3.a, obj3.b)
 
-#HOW TO WORK COLLABORATIVELY IN GIT / GITHUB
+# HOW TO WORK COLLABORATIVELY IN GIT / GITHUB
 # Fetch and merge changes from the remote
 #     Create a branch to work on a new project feature
 #     Develop the feature on your branch and commit your work
 #     Fetch and merge from the remote again (in case new commits were made while you were working)
 #     Push your branch up to the remote for review
-
