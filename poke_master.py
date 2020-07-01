@@ -134,8 +134,20 @@ class Trainer():
         else:
             self.current_pokemon = current_pokemon
 
-    def attack(self, trainer):
-        pass
+    def attack(self, opp_trainer):
+        if not self.is_battle_ready():
+            return print(f"All {self.name}'s Pokemon have fainted! Please visit a Healing Center, FOOL!!!")
+        if not opp_trainer.is_battle_ready():
+            return print(f"Opposing Trainer {opp_trainer.name} is out of useable Pokemon! You win this battle!")
+            
+        self.current_pokemon.attacks(opp_trainer.current_pokemon)
+
+        if not self.is_battle_ready():
+            return print(f"All {self.name}'s Pokemon have fainted! Please visit a Healing Center, FOOL!!!")
+        if not opp_trainer.is_battle_ready():
+            return print(f"{opp_trainer.name} is out of useable Pokemon! You win this battle!")
+   
+
 
     def use_potion(self, target_pokemon, potion=None):
 
@@ -144,10 +156,37 @@ class Trainer():
                 target_pokemon.heal(100)
                 print(f'Used {self.potions[0]}.')
                 self.potions.pop(0)
-                return 
+                
+        else:
+            index_count = 0
+            for i in self.potions:
+                if i == potion:
+                    target_pokemon.heal(100)
+                    print(f'Used {potion}.')
+                    self.potions.pop(index_count)
+                    return
+                index_count += 1
+            return print(f"{potion} is not in your inventory.")   
 
-    def switch_pokemon(self, new_pokemon):
-        # this is going to work for both yourself and the opposing trainer
+
+    def is_battle_ready(self):
+        if self.current_pokemon.awake == True:
+            return True
+        else:
+            self.switch_pokemon()
+            if self.current_pokemon.awake == False:
+                return False
+            return True
+
+    def switch_pokemon(self, new_pokemon = None):
+
+        if new_pokemon == None:
+            for i in self.pokemon:
+                if i.awake == True:
+                    self.current_pokemon = i
+                    return print(f"{self.name} switched current pokemon to {i.name}")
+            self.current_pokemon == None
+            return print(f"All {self.name}'s Pokemon are Unconcious. Please visit a Healer to continue.")
 
         if self.current_pokemon == new_pokemon:
             return print('Already current!')
@@ -160,7 +199,6 @@ class Trainer():
                     return print(f"Switched current pokemon to {i.name}")
 
                 return print(f"{i.name} is Unconcious. Choose another!")
-
 
         return print("Pokemon not owned! Better catch 'em all!")
 
@@ -179,9 +217,10 @@ class Trainer():
 
 # here's my little test section! let's see if things are working!
 # test class instantiation
-Cyndaquil = Pokemon("Cyndaquil", 40, "Fire", 100)
+Cyndaquil = Pokemon("Cyndaquil", 40, "Fire", 100,)
 Totodile = Pokemon("Totodile", 50, "Water", 100)
-Charmander = Pokemon("Charmander", 60, "Fire", awake_asleep=False)
+Charmander = Pokemon("Charmander", 60, "Fire", awake_asleep=True)
+Chicorita = Pokemon("Chicorita", 40, "Grass")
 # print(Cyndaquil)
 # this test worked and I got the __repr__ method to work with strings
 # print(Cyndaquil.name)
@@ -191,16 +230,29 @@ Charmander = Pokemon("Charmander", 60, "Fire", awake_asleep=False)
 # print(Cyndaquil.max_health)
 
 # test Trainer instantiation
-Ash = Trainer("Ash", pokemon=[Cyndaquil, Totodile, Charmander], potions=[
+Ash = Trainer("Ash", pokemon=[Cyndaquil, Totodile], potions=[
               "heal", "revive", "antidote", "burn salve"])
-print(Ash)
-Ash.use_potion(Charmander)
-print(Ash)
-# fix the problem with the advantage/disadvantage chart if the pokemon's element
-# doesn't appear within the chart
-# ie for Pikachu
-# I think i fixed this 6.26.20
+Blue = Trainer("Blue", pokemon=[Charmander, Chicorita], potions=["heal"])
 
+# print(Ash)
+# Ash.use_potion(Charmander, "antidote")
+# print(Ash)
+
+Ash.is_battle_ready()
+Blue.is_battle_ready()
+Ash.attack(Blue)
+Blue.attack(Ash)
+Ash.attack(Blue)
+Blue.attack(Ash)
+Ash.attack(Blue)
+Blue.attack(Ash)
+Ash.attack(Blue)
+Blue.attack(Ash)
+Ash.attack(Blue)
+Blue.attack(Ash)
+Ash.attack(Blue)
+Blue.attack(Ash)
+# Ash.attack(Blue)
 
 # TESTING THE ATTACK FUNCTION WITH ALL FUNCTIONALITY
 
@@ -218,29 +270,6 @@ print(Ash)
 # Charmander.attacks(Cyndaquil)
 # Cyndaquil.attacks(Charmander)
 
-
-# #this is us playing around to see if I understand it
-# class A:
-#     b = 20
-#     def __init__(self, a):
-#         self.a = a
-
-#     def the_third(self):
-#         return self.a ** 3
-
-#     def __add__(self, other):
-#         return self.a + other.a
-
-
-# obj1 = A(5)
-# obj2 = A(10)
-# print(obj1 + obj2)  # 15
-# #print(obj1 - obj2)
-
-# print(obj1.the_third())
-
-# obj3 = A(20)
-# print(obj3.a, obj3.b)
 
 # HOW TO WORK COLLABORATIVELY IN GIT / GITHUB
 # Fetch and merge changes from the remote
